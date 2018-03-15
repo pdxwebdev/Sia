@@ -87,7 +87,7 @@ func testDownloadMultipleLargeSectors(t *testing.T, tg *siatest.TestGroup) {
 	// parallelDownloads is the number of downloads that are run in parallel.
 	parallelDownloads := 10
 	// fileSize is the size of the downloaded file.
-	fileSize := int(10*modules.SectorSize) + siatest.Fuzz()
+	fileSize := int(10 * modules.SectorSize) // + siatest.Fuzz()
 	// set download limits and reset them after test.
 	ratelimit.SetLimits(int64(fileSize)*2, 0, modules.SectorSize)
 	defer ratelimit.SetLimits(0, 0, 0)
