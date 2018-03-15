@@ -239,6 +239,9 @@ func newContractor(cs consensusSet, w wallet, tp transactionPool, hdb hostDB, co
 	}
 
 	// Mark contract utility.
+	// TODO we probably have to force this to succeed even if there is a scan
+	// going on. Otherwise all the contract utilities might end up
+	// uninitialized.
 	c.managedMarkContractsUtility()
 
 	// Subscribe to the consensus set.
