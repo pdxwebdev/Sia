@@ -61,6 +61,13 @@ func (c *Client) RenterPost(allowance modules.Allowance) (err error) {
 	return
 }
 
+// RenterStreamGet uses the /renter/stream endpoint to download data as a
+// stream.
+func (c *Client) RenterStreamGet(siaPath string) (resp []byte, err error) {
+	resp, err = c.getRawResponse("/renter/stream/" + siaPath)
+	return
+}
+
 // RenterUploadPost uses the /renter/upload endpoin to upload a file
 func (c *Client) RenterUploadPost(path, siaPath string, dataPieces, parityPieces uint64) (err error) {
 	values := url.Values{}
