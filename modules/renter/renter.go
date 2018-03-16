@@ -195,6 +195,7 @@ type Renter struct {
 	mu             *siasync.RWMutex
 	tg             threadgroup.ThreadGroup
 	tpool          modules.TransactionPool
+	deps           modules.Dependencies
 }
 
 // Close closes the Renter and its dependencies
@@ -379,7 +380,7 @@ func validateSiapath(siapath string) error {
 var _ modules.Renter = (*Renter)(nil)
 
 // newRenter initializes a renter and returns it.
-func newRenter(g modules.Gateway, cs modules.ConsensusSet, tpool modules.TransactionPool, hdb hostDB, hc hostContractor, persistDir string) (*Renter, error) {
+func newRenter(g modules.Gateway, cs modules.ConsensusSet, tpool modules.TransactionPool, hdb hostDB, hc hostContractor, persistDir string, deps modules.Dependencies) (*Renter, error) {
 	if g == nil {
 		return nil, errNilGateway
 	}
@@ -422,6 +423,7 @@ func newRenter(g modules.Gateway, cs modules.ConsensusSet, tpool modules.Transac
 		persistDir:     persistDir,
 		mu:             siasync.New(modules.SafeMutexDelay, 1),
 		tpool:          tpool,
+		deps:           deps,
 	}
 	r.memoryManager = newMemoryManager(defaultMemory, r.tg.StopChan())
 
@@ -465,5 +467,5 @@ func New(g modules.Gateway, cs modules.ConsensusSet, wallet modules.Wallet, tpoo
 		return nil, err
 	}
 
-	return newRenter(g, cs, tpool, hdb, hc, persistDir)
+	return newRenter(g, cs, tpool, hdb, hc, persistDir, &modules.ProductionDependencies{})
 }
